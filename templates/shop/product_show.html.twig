@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'shop_product_show' %}
+
+{% block main %}
+<div class="row">
+    <div class="col-md-5 pr-md-5 mb-4 mb-md-0">
+        {% set cover = product.images|first %}
+        <div class="image-container">
+            <img src="/img/upload/{{ cover.name }}" alt="{{ cover.description }}" class="img img-fluid product-single__image">
+        </div>
+        {% if product.images.count > 1 %}
+            <div class="d-flex mt-2">
+                {% for image in product.images[1:] %}
+                    <div class="mr-2 image-container w-25">
+                        <img src="/img/upload/{{ image.name }}" alt="{{ image.description }}" class="img img-fluid product-single__image">
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-7">
+        <header class="mb-4">
+            <h1 class="product-single__heading">{{ product.name }}</h1>
+        </header>
+        <p class="product-single__price">{{ product.price }} €</p>
+        <div class="basket-add mb-4">
+            {% if product.hasStock %}
+                    <a href="{{ path('cart_add', {id: product.id}) }}">
+                    <i class="fas fa-shopping-cart mr-2"></i>
+                    Ajouter au panier
+                </a>
+            {% else %}
+                <a href="#" class="btn btn-secondary disabled">Rupture de stock</a>
+            {% endif %}
+        </div>
+        <p>
+            {{ product.description }}
+        </p>
+    </div>
+</div>
+
+    <div id="product-add-comment" class="well">
+        {# The 'IS_AUTHENTICATED_FULLY' role ensures that the user has entered
+        their credentials (login + password) during this session. If they
+        are automatically logged via the 'Remember Me' functionality, they won't
+        be able to add a comment.
+        See https://symfony.com/doc/current/security/remember_me.html#forcing-the-user-to-re-authenticate-before-accessing-certain-resources
+        #}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+      {{ render(controller('App\\Controller\\ProductController::commentForm', {id: product.id})) }}
+
+        {% else %}
+            <p>
+                <a class="btn btn-success" href="{{ path('security_login', {'redirect_to': app.request.pathInfo}) }}">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
+                </a>
+                {{ 'product.to_publish_a_comment'|trans }}
+            </p>
+        {% endif %}
+    </div>
+
+    <h3>
+        <i class="fa fa-comments" aria-hidden="true"></i> {{ 'product.num_comments'|trans({ 'count': product.comments|length }) }}
+    </h3>
+
+    {% for comment in product.comments %}
+        <div class="row product-comment">
+            <a name="comment_{{ comment.id }}"></a>
+            <h4 class="col-sm-3">
+                <strong>{{ comment.author.fullName }}</strong> {{ 'product.commented_on'|trans }}
+                {# it's not mandatory to set the timezone in localizeddate(). This is done to
+                   avoid errors when the 'intl' PHP extension is not available and the application
+                   is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+                <strong>{{ comment.publishedAt|format_datetime('medium', 'short', '', 'UTC') }}</strong>
+            </h4>
+            <div class="col-sm-9">
+                {{ comment.content|md2html }}
+            </div>
+        </div>
+    {% else %}
+        <div class="product-comment">
+            <p>{{ 'product.no_comments'|trans }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('edit', product) %}
+        <div class="section">
+            <a class="btn btn-lg btn-block btn-success" href="{{ path('admin_product_edit', {id: product.id}) }}">
+                <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit_product'|trans }}
+            </a>
+        </div>
+    {% endif %}
+
+
+{% endblock %}

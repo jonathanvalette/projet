@@ -1,0 +1,11 @@
+{% if not product.tags.empty %}
+    <p class="post-tags">
+        {% for tag in  product.tags %}
+            <a href="{{ path('shop_index', {'tag': tag.name == app.request.query.get('tag') ? null : tag.name}) }}"
+               class="label label-{{ tag.name == app.request.query.get('tag') ? 'success' : 'default' }}"
+            >
+                <i class="fa fa-tag"></i> {{ tag.name }}
+            </a>
+        {% endfor %}
+    </p>
+{% endif %}

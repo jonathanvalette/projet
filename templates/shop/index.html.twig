@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+{% block title %}Home{% endblock title %}
+
+{% block main %}
+
+<section class="new-products">
+    <header class="d-flex flex-column justify-content-center align-items-center my-4">
+        <h2>Nouveautés</h2>
+        <div class="line"></div>
+    </header>
+    <div class="row">
+        {% for product in latest_products %}
+            <div class="col-md-4">
+                <article class="product-card card border-0 mb-4">
+                    {% set thumb = product.images|first %}
+                    <div class="image-container">
+                          <a href="{{ path('shop_product', {slug: product.slug}) }}">
+                            <img src="/img/upload/{{ thumb.name }}" alt="{{ thumb.description }}" class="product-card__image img img-fluid">
+                        </a>
+                    </div>
+                    <div class="card-body pt-0">
+                        <h4 class="product-card__heading">
+                            <a href="/product/{{ product.slug }}" class="product-card__link">
+                                {{ product.name }}
+                            </a>
+                        </h4>
+                        <div class="divider mb-2"></div>
+                        <div class="product-card__price text-right">{{ product.price }} €</div>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+<section class="all-products">
+    <header class="d-flex flex-column justify-content-center align-items-center my-4">
+        <h2>Tous les produits</h2>
+        <div class="line"></div>
+    </header>
+    <div class="row">
+          {% for product in paginator.results %}
+            <div class="col-md-4">
+                <article class="product-card card border-0 mb-4">
+                    {% set thumb = product.images|first %}
+                    <div class="image-container">
+                        <a href="{{ path('shop_product', {slug: product.slug}) }}">
+                            <img src="/img/upload/{{ thumb.name }}" alt="{{ thumb.description }}" class="product-card__image img img-fluid">
+                        </a>
+                    </div>
+                    <div class="card-body pt-0">
+                        <h4 class="product-card__heading">
+                          <a href="{{ path('shop_product', {slug: product.slug}) }}">
+                              {{ product.name }}
+                          </a>
+                        </h4>
+                        <div class="divider mb-2"></div>
+                        <div class="product-card__price text-right">{{ product.price }} €</div>
+                        <div class="basket-add mb-4">
+
+
+                                <a href="#" class="btn btn-secondary disabled">Rupture de stock</a>
+
+                        </div>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+        {% if paginator.hasToPaginate %}
+            <div class="navigation text-center">
+                <ul class="pagination">
+                    {% if paginator.hasPreviousPage %}
+                        <li class="prev"><a href="{{ path('shop_index_paginated', {page: paginator.previousPage}) }}" rel="previous"><i class="fa fw fa-long-arrow-left"></i> {{ 'paginator.previous'|trans }}</a></li>
+                    {% else %}
+                        <li class="prev disabled"><span><i class="fa fw fa-arrow-left"></i> {{ 'paginator.previous'|trans }}</span></li>
+                    {% endif %}
+
+                    {% for i in 1..paginator.lastPage %}
+                        {% if i == paginator.currentPage %}
+                            <li class="active"><span>{{ i }} <span class="sr-only">{{ 'paginator.current'|trans }}</span></span></li>
+                        {% else %}
+                            <li><a href="{{ path('shopg_index_paginated', {page: i}) }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if paginator.hasNextPage %}
+                        <li class="next"><a href="{{ path('shop_index_paginated', {page: paginator.nextPage}) }}" rel="next">{{ 'paginator.next'|trans }} <i class="fa fw fa-arrow-right"></i></a></li>
+                    {% else %}
+                        <li class="next disabled"><span>{{ 'paginator.next'|trans }} <i class="fa fw fa-arrow-right"></i></span></li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+
+{% endblock %}
