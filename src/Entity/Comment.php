@@ -23,13 +23,6 @@ class Comment
      */
     private $id;
 
-    /**
-     * @var Post
-     *
-     * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $post;
 
     /**
      * @var product
@@ -117,17 +110,6 @@ class Comment
     {
         $this->author = $author;
     }
-
-    public function getPost(): ?Post
-    {
-        return $this->post;
-    }
-
-    public function setPost(Post $post): void
-    {
-        $this->post = $post;
-    }
-
 
     public function getProduct(): ?Product
       {
