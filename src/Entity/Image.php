@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
- * @ORM\Table(name="images")
+ * @ORM\Table(name="symfony_images")
  */
 class Image
 {
@@ -29,12 +29,12 @@ class Image
      * @ORM\Column(type="string")
      */
     private $name;
-    
+
     /**
      * @ORM\Column(type="string")
      */
     private $description;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
@@ -64,27 +64,27 @@ class Image
     {
         return $this->product;
     }
-    
+
     public function getName(): ?string
     {
         return $this->name;
     }
-    
+
     public function getDescription(): ?string
     {
         return $this->description;
     }
-    
+
     public function getSize(): int
     {
         return $this->size;
     }
-    
+
     public function getFile(): ?UploadedFile
     {
         return $this->file;
     }
-    
+
     public function setProduct(Product $product)
     {
         $this->product = $product;
@@ -94,17 +94,17 @@ class Image
     {
         $this->name = $name;
     }
-    
+
     public function setDescription(string $description)
     {
         $this->description = $description;
     }
-    
+
     public function setSize(int $size)
     {
         $this->size = $size;
     }
-    
+
     public function setFile(UploadedFile $file)
     {
         $this->file = $file;

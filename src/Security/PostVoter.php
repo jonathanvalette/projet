@@ -1,13 +1,5 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace App\Security;
 
@@ -20,9 +12,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  * It grants or denies permissions for actions related to blog posts (such as
  * showing, editing and deleting posts).
  *
- * See https://symfony.com/doc/current/security/voters.html
- *
- * @author Yonel Ceruto <yonelceruto@gmail.com>
  */
 class PostVoter extends Voter
 {

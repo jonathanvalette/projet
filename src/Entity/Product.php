@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  * @ORM\Table(
- *     name="products",
+ *     name="symfony_products",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="uniq_slug_softdelete", columns={"slug", "deleted_at"})
  *     }
@@ -35,11 +35,6 @@ class Product
      * @ORM\Column(type="text")
      */
     private $description;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $category;
 
     /**
      * @ORM\Column(type="integer")
@@ -103,6 +98,12 @@ class Product
      */
     private $tags;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
+     */
+    private $category;
+
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -120,9 +121,6 @@ class Product
 
         $metadata->addPropertyConstraint('description', new Assert\Type('string'));
         $metadata->addPropertyConstraint('description', new Assert\NotNull());
-
-        $metadata->addPropertyConstraint('category', new Assert\Type('string'));
-        $metadata->addPropertyConstraint('category', new Assert\NotNull());
 
         $metadata->addPropertyConstraint('stock', new Assert\Type('int'));
         $metadata->addPropertyConstraint('stock', new Assert\NotNull());
@@ -158,11 +156,6 @@ class Product
     public function getDescription(): ?string
     {
         return $this->description;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->category;
     }
 
     public function getStock(): ?int
@@ -208,10 +201,6 @@ class Product
         $this->description = $description;
     }
 
-    public function setCategory($category)
-    {
-        $this->category = $category;
-    }
 
     public function setStock($stock)
     {
@@ -320,4 +309,53 @@ class Product
     {
         $this->comments->removeElement($comment);
     }
+
+    public function addTag(Tag ...$tags): void
+    {
+        foreach ($tags as $tag) {
+            if (!$this->tags->contains($tag)) {
+                $this->tags->add($tag);
+            }
+        }
+    }
+
+    public function removeTag(Tag $tag): void
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function getProduct(): ?Product
+      {
+          return $this->product;
+      }
+
+    public function setProduct(Product $product): void
+      {
+            $this->product = $product;
+      }
+
+      /**
+       * Get category
+       *
+       */
+      public function getCategory()
+      {
+          return $this->category;
+      }
+
+      /**
+       * Set category
+       *
+       * @param Category $category
+       */
+      public function setCategory($category)
+      {
+          $this->category = $category;
+      }
+
 }

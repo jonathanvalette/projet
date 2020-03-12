@@ -133,13 +133,13 @@ class ProductRepository extends ServiceEntityRepository
 
         foreach ($searchTerms as $key => $term) {
             $queryBuilder
-                ->orWhere('p.title LIKE :t_'.$key)
+                ->orWhere('p.name LIKE :t_'.$key)
                 ->setParameter('t_'.$key, '%'.$term.'%')
             ;
         }
 
         return $queryBuilder
-            ->orderBy('p.publishedAt', 'DESC')
+            ->orderBy('p.dateCreated', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

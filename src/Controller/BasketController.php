@@ -31,7 +31,7 @@ class BasketController extends AbstractController
     }
 
      /**
-     * @Route("/", methods="GET", name="cart_show")
+     * @Route("/cart", methods="GET", name="cart_show")
      *
      */
     public function show()
@@ -42,7 +42,7 @@ class BasketController extends AbstractController
         if ($this->basket->hasProducts()) {
             $products = $this->basket->getProducts();
             $totalPrice = $this->basket->totalPrice($products);
-            $totalTaxe = $this->basket->totalTaxe($products);
+
         }
 
         return $this->render('shop/basket.html.twig', [
@@ -79,7 +79,7 @@ class BasketController extends AbstractController
     }
 
     /**
-    * @Route("/remove", methods="POST", name="cart_remove")
+    * @Route("/remove/{id}", methods="GET|POST", name="cart_remove")
     *
     */
     public function remove($id)
@@ -94,7 +94,7 @@ class BasketController extends AbstractController
 
         $this->basket->remove($product);
 
-        return $this->redirectToRoute('basket_show');
+        return $this->redirectToRoute('cart_show');
     }
 
     /**

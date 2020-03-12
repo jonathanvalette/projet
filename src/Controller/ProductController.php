@@ -48,10 +48,6 @@ class ProductController extends AbstractController
     }
 
     /**
-    * @Route("/show", methods="GET", name="shop_show")
-    *
-    */
-    /**
      * @Route("/products/{slug}", methods="GET", name="shop_product")
      *
      */
@@ -120,5 +116,27 @@ class ProductController extends AbstractController
               'form' => $form->createView(),
           ]);
       }
+      /**
+       * @Route("/search", methods="GET", name="shop_search")
+       */
+      public function search(Request $request, ProductRepository $products): Response
+      {
+          if (!$request->isXmlHttpRequest()) {
+              return $this->render('shop/search.html.twig');
+          }
 
+          $query = $request->query->get('q', '');
+          $limit = $request->query->get('l', 10);
+          $foundProducts = $products->findBySearchQuery($query, $limit);
+
+          $results = [];
+          foreach ($foundProducts as $product) {
+              $results[] = [
+                  'name' => htmlspecialchars($product->getName(), ENT_COMPAT | ENT_HTML5),
+                  'description' => htmlspecialchars($product->getDescription(), ENT_COMPAT | ENT_HTML5),
+              ];
+          }
+
+          return $this->json($results);
+      }
 }

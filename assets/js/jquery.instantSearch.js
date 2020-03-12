@@ -1,8 +1,5 @@
 /**
  * jQuery plugin for an instant searching.
- *
- * @author Oleg Voronkovich <oleg-voronkovich@yandex.ru>
- * @author Yonel Ceruto <yonelceruto@gmail.com>
  */
 (function ($) {
     'use strict';
@@ -32,12 +29,8 @@
         noResultsMessage: 'No results found',
         itemTemplate: '\
                 <article class="post">\
-                    <h2><a href="{{ url }}">{{ title }}</a></h2>\
-                    <p class="post-metadata">\
-                       <span class="metadata"><i class="fa fa-calendar"></i> {{ date }}</span>\
-                       <span class="metadata"><i class="fa fa-user"></i> {{ author }}</span>\
-                    </p>\
-                    <p>{{ summary }}</p>\
+                    <h2 class="product-card__heading>{{ name }}</h2>\
+                    <p>{{ description }}</p>\
                 </article>'
     };
 

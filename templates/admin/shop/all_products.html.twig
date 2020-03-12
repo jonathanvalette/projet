@@ -10,8 +10,8 @@
         <thead class="thead-responsive">
             <tr class="row">
                 <th class="col-md">Produit</th>
-                <th class="col-md">Catégorie</th>
-                <th class="col-md">Stock</th>
+                <th class="col-md">x</th>
+                <th class="col-md">y</th>
             </tr>
         </thead>
         {% if products is not empty %}
@@ -28,8 +28,10 @@
                             </div>
                         </div>
                     </td>
-                    <td class="col-md">{{ product.category }}</td>
                     <td class="col-md">{{ product.stock }}</td>
+                      <td class="col-md">{{ product.price }}</td>
+                      <td class="col-md">{{ product.category.nom }}</td>
+
                 </tr>
             {% endfor %}
         {% else %}
@@ -39,6 +41,21 @@
         {% endif %}
     </table>
 
+
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section actions">
+        <a href="{{ path('admin_product_new') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.create_product'|trans }}
+        </a>
+    </div>
+    <br>
+    <div class="section actions">
+        <a href="{{ path('admin_category_new') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.create_category' }}
+        </a>
+    </div>
 
 {% endblock %}
 
